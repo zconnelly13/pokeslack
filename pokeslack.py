@@ -30,7 +30,7 @@ class Pokeslack:
             return
 
         padded_distance = distance * 1.1
-        travel_time = padded_distance / 0.00194444 # assumes 3mph (or 0.0008333 miles per second) walking speed
+        travel_time = padded_distance / 0.00333333 # assumes 12mph (in miles per second)
         if expires_in.total_seconds() < travel_time:
             logger.info('skipping pokemon since it\'s too far: traveltime=%s for distance=%s', travel_time, distance)
             return
@@ -55,6 +55,8 @@ class Pokeslack:
 
         logging.info('%s: %s', pokemon_key, message)
         if self._send(message):
+	    if rarity >= 3:
+	    	self._send("<!channel>: Rare Pokemon!! ^")
             self.sent_pokemon[pokemon_key] = True
 
     def _send(self, message):
